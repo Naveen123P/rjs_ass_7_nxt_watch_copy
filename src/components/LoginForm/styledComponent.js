@@ -37,6 +37,10 @@ export const Input = styled.input`
   font-size: 1rem;
   font-weight: 500;
   border: 1px solid ${props => (props.isDark ? '#f4f4f4' : '#7e858e')};
+  :focus {
+    background-color: #ffffff;
+  }
+  background-color: ${props => (props.isEmpty ? '' : '#f4f4f4')};
 `
 export const CLabel = styled.label`
   display: inline;

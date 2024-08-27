@@ -1,4 +1,5 @@
 import {Component} from 'react'
+import Cookies from 'js-cookie'
 import ThemContext from '../../context/ThemContext'
 import {
   LoginBg,
@@ -15,8 +16,41 @@ class LoginForm extends Component {
     isChecked: false,
     username: '',
     password: '',
-    showSubmitError: true,
-    errorMsg: 'asdgsbf',
+    showSubmitError: false,
+    errorMsg: '',
+  }
+
+  onSubmitSuccess = jwtToken => {
+    Cookies.set('jwt_token', jwtToken, {expires: 30})
+    const {history} = this.props
+    history.replace('/')
+  }
+
+  onsubmitFailure = errorMsg => {
+    this.setState({
+      showSubmitError: true,
+      errorMsg,
+    })
+  }
+
+  onSubmitForm = async event => {
+    event.preventDefault()
+    const {username, password} = this.state
+    const userDetails = {username, password}
+    const url = 'https://apis.ccbp.in/login'
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(userDetails),
+    }
+    const response = await fetch(url, options)
+    console.log(response)
+    const data = await response.json()
+    if (response.ok) {
+      console.log(data)
+      this.onSubmitSuccess(data.jwt_token)
+    } else {
+      this.onsubmitFailure(data.error_msg)
+    }
   }
 
   onChangeUsername = event => {
@@ -31,6 +65,7 @@ class LoginForm extends Component {
           USERNAME
         </Label>
         <Input
+          isEmpty={username.length === 0}
           type="text"
           isDark={isDark}
           value={username}
@@ -52,9 +87,10 @@ class LoginForm extends Component {
     return (
       <div className="input-container">
         <Label isDark={isDark} htmlFor="password">
-          Password
+          PASSWORD
         </Label>
         <Input
+          isEmpty={password.length === 0}
           type={inputType}
           isDark={isDark}
           value={password}
