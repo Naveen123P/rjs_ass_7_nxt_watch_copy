@@ -7,6 +7,7 @@ import {IoMdMoon} from 'react-icons/io'
 import {IoReorderThreeSharp} from 'react-icons/io5'
 import {FiLogOut} from 'react-icons/fi'
 
+import RouteItems from './RouteItems'
 import ThemContext from '../../context/ThemContext'
 import {
   HeaderBg,
@@ -17,19 +18,32 @@ import {
   Para,
   ConformButton,
   CancelButton,
+  UnList,
 } from './styledComponent'
 import './index.css'
 
-const RoutesList = {
-  home: 'HOME',
-  trending: 'TRENDING',
-  gaming: 'GAMING',
-  savedVideos: 'SAVED VIDEOS',
-}
+const RoutesList = [
+  {
+    routeId: 'home',
+    displayText: 'Home',
+  },
+  {
+    routeId: 'trending',
+    displayText: 'Trending',
+  },
+  {
+    routeId: 'gaming',
+    displayText: 'Gaming',
+  },
+  {
+    routeId: 'saved-videos',
+    displayText: 'Saved videos',
+  },
+]
 
 class Header extends Component {
   state = {
-    activeRoute: RoutesList.home,
+    activeRoute: 'home',
   }
 
   onClickLogout = () => {
@@ -64,24 +78,45 @@ class Header extends Component {
     </Popup>
   )
 
-  renderNavigationView = isDark => (
-    <Popup
-      model
-      trigger={
-        <Button isDark={isDark} type="button">
-          {' '}
-          <IoReorderThreeSharp />{' '}
-        </Button>
-      }
-      position="bottom"
-    >
-      {close => (
-        <NavModelBg isDark={isDark}>
-          <p onClick={() => close()}>fghjk</p>
-        </NavModelBg>
-      )}
-    </Popup>
+  changeActiveRoute = id => {
+    console.log(id)
+    this.setState({activeRoute: id})
+  }
+
+  renderRouteItemsList = (isDark, activeRoute) => (
+    <UnList isDark={isDark}>
+      {RoutesList.map(each => (
+        <RouteItems
+          key={each.routeId}
+          routeDetails={each}
+          isDark={isDark}
+          isActive={activeRoute === each.routeId}
+          changeActiveRoute={this.changeActiveRoute}
+        />
+      ))}
+    </UnList>
   )
+
+  renderNavigationView = isDark => {
+    const {activeRoute} = this.state
+    return (
+      <Popup
+        model
+        trigger={
+          <Button isDark={isDark} type="button">
+            <IoReorderThreeSharp />{' '}
+          </Button>
+        }
+        position="bottom"
+      >
+        {/* {close => ( */}
+        <NavModelBg isDark={isDark}>
+          {this.renderRouteItemsList(isDark, activeRoute)}
+        </NavModelBg>
+        {/* )} */}
+      </Popup>
+    )
+  }
 
   renderThemItem = (isDark, changeThem) => {
     const onChangeThem = () => {
@@ -103,6 +138,8 @@ class Header extends Component {
   }
 
   render() {
+    const {activeRoute} = this.state
+    console.log(activeRoute)
     return (
       <ThemContext.Consumer>
         {value => {

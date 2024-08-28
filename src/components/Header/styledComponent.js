@@ -51,3 +51,6 @@ export const CancelButton = styled.button`
   background-color: transparent;
   padding: 5px;
 `
+export const UnList = styled.ul`
+  list-style-type: none;
+`
