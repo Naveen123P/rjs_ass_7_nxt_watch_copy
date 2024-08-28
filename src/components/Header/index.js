@@ -7,39 +7,20 @@ import {IoMdMoon} from 'react-icons/io'
 import {IoReorderThreeSharp} from 'react-icons/io5'
 import {FiLogOut} from 'react-icons/fi'
 
-import RouteItems from './RouteItems'
+import RouteNavigationList from '../RouteNavigationList'
 import ThemContext from '../../context/ThemContext'
 import {
   HeaderBg,
   ItemsContainer,
   Button,
-  NavModelBg,
+  MobileButton,
+  DesktopButton,
   LogoutModelBg,
   Para,
   ConformButton,
   CancelButton,
-  UnList,
 } from './styledComponent'
 import './index.css'
-
-const RoutesList = [
-  {
-    routeId: 'home',
-    displayText: 'Home',
-  },
-  {
-    routeId: 'trending',
-    displayText: 'Trending',
-  },
-  {
-    routeId: 'gaming',
-    displayText: 'Gaming',
-  },
-  {
-    routeId: 'saved-videos',
-    displayText: 'Saved videos',
-  },
-]
 
 class Header extends Component {
   state = {
@@ -52,13 +33,13 @@ class Header extends Component {
     history.replace('/login')
   }
 
-  renderLogoutButton = isDark => (
+  renderDesktopLogoutButton = isDark => (
     <Popup
       model
       trigger={
-        <Button isDark={isDark} type="button">
-          <FiLogOut />{' '}
-        </Button>
+        <DesktopButton isDark={isDark} type="button">
+          Logout
+        </DesktopButton>
       }
       //   position="right-bottom"
     >
@@ -78,45 +59,45 @@ class Header extends Component {
     </Popup>
   )
 
-  changeActiveRoute = id => {
-    console.log(id)
-    this.setState({activeRoute: id})
-  }
-
-  renderRouteItemsList = (isDark, activeRoute) => (
-    <UnList isDark={isDark}>
-      {RoutesList.map(each => (
-        <RouteItems
-          key={each.routeId}
-          routeDetails={each}
-          isDark={isDark}
-          isActive={activeRoute === each.routeId}
-          changeActiveRoute={this.changeActiveRoute}
-        />
-      ))}
-    </UnList>
+  renderMobileLogoutButton = isDark => (
+    <Popup
+      model
+      trigger={
+        <MobileButton isDark={isDark} type="button">
+          <FiLogOut />{' '}
+        </MobileButton>
+      }
+      //   position="right-bottom"
+    >
+      {close => (
+        <LogoutModelBg isDark={isDark}>
+          <Para isDark={isDark}>Are you sure, want to logout ?</Para>
+          <div className="flex-row">
+            <CancelButton isDark={isDark} type="button" onClick={() => close()}>
+              Cancel
+            </CancelButton>
+            <ConformButton type="button" onClick={this.onClickLogout}>
+              Conform
+            </ConformButton>
+          </div>
+        </LogoutModelBg>
+      )}
+    </Popup>
   )
 
-  renderNavigationView = isDark => {
-    const {activeRoute} = this.state
-    return (
-      <Popup
-        model
-        trigger={
-          <Button isDark={isDark} type="button">
-            <IoReorderThreeSharp />{' '}
-          </Button>
-        }
-        position="bottom"
-      >
-        {/* {close => ( */}
-        <NavModelBg isDark={isDark}>
-          {this.renderRouteItemsList(isDark, activeRoute)}
-        </NavModelBg>
-        {/* )} */}
-      </Popup>
-    )
-  }
+  renderNavigationView = isDark => (
+    <Popup
+      model
+      trigger={
+        <Button isDark={isDark} type="button">
+          <IoReorderThreeSharp />{' '}
+        </Button>
+      }
+      position="bottom"
+    >
+      <RouteNavigationList dummy="dummy" />
+    </Popup>
+  )
 
   renderThemItem = (isDark, changeThem) => {
     const onChangeThem = () => {
@@ -158,8 +139,22 @@ class Header extends Component {
               </Link>
               <ItemsContainer isDark={isDark}>
                 {this.renderThemItem(isDark, changeThem)}
-                {this.renderNavigationView(isDark)}
-                {this.renderLogoutButton(isDark)}
+                <div className="mobile-popup-navigation">
+                  {this.renderNavigationView(isDark)}
+                </div>
+                <div className="profile-container">
+                  <img
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
+                    alt="profile"
+                    className="profile-img"
+                  />
+                </div>
+                <div className="mobile-logout">
+                  {this.renderMobileLogoutButton(isDark)}
+                </div>
+                <div className="desktop-logout">
+                  {this.renderDesktopLogoutButton(isDark)}
+                </div>
               </ItemsContainer>
             </HeaderBg>
           )

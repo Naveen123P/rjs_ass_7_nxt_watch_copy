@@ -47,10 +47,16 @@ const RouteItems = props => {
           className="route-button"
           onClick={onChangeActiveRoute}
         >
-          <IconContainer isDark={isDark} className="route-icon">
+          <IconContainer
+            isDark={isDark}
+            isActive={isActive}
+            className="route-icon"
+          >
             {renderRouteIcon()}
           </IconContainer>
-          <Para isActive={isActive}>{displayText}</Para>
+          <Para isDark={isDark} isActive={isActive}>
+            {displayText}
+          </Para>
         </button>
       </Link>
     </ListItem>

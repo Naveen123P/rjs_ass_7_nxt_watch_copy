@@ -1,4 +1,4 @@
-import {Route, Switch, Redirect} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import {Component} from 'react'
 import ThemContext from './context/ThemContext'
 import Home from './components/Home'
