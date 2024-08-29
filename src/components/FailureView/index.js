@@ -7,6 +7,7 @@ const FailureView = props => {
   const {retry} = props
 
   const onClickRetry = () => {
+    console.log('retry')
     retry()
   }
 

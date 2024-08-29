@@ -1,7 +1,7 @@
 import ThemContext from '../../context/ThemContext'
 
 import './index.css'
-import {Heading, Para, RetryButton} from './styledComponent'
+import {Heading, Para, RetryButton} from '../FailureView/styledComponent'
 
 const NoSearchResultView = props => {
   const {retry} = props
@@ -16,7 +16,7 @@ const NoSearchResultView = props => {
         const {isDark} = value
 
         return (
-          <div className="no-search-bg">
+          <div className="failure-bg">
             <img
               src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
               alt="no videos"
