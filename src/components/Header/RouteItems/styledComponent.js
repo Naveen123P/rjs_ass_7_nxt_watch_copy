@@ -9,6 +9,9 @@ export const ListItem = styled.li`
   width: 100%;
   padding-left: 1.5rem;
   padding-right: 1rem;
+  @media screen and (min-width: 768px) {
+      padding: 0px;
+  }
 `
 
 export const IconContainer = styled.div`

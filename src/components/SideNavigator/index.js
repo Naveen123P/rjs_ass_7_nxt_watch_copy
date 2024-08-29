@@ -1,5 +1,6 @@
 import RouteNavigationList from '../RouteNavigationList'
 import ThemContext from '../../context/ThemContext'
+import ContactUs from '../ContactUs'
 import {SideContainer, Dummy} from './styledComponent'
 import './index.css'
 
@@ -11,6 +12,7 @@ const SideNavigator = () => (
       return (
         <SideContainer isDark={isDark} className="side-navigator-container">
           <RouteNavigationList />
+          <ContactUs />
         </SideContainer>
       )
     }}

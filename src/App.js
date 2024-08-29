@@ -13,19 +13,26 @@ import './App.css'
 class App extends Component {
   state = {
     isDark: true,
+    displayPremiumBox: true,
   }
 
   changeThem = () => {
     this.setState(prevState => ({isDark: !prevState.isDark}))
   }
 
+  closePremiumBox = () => {
+    this.setState({displayPremiumBox: false})
+  }
+
   render() {
-    const {isDark} = this.state
+    const {isDark, displayPremiumBox} = this.state
     return (
       <ThemContext.Provider
         value={{
           isDark,
+          displayPremiumBox,
           changeThem: this.changeThem,
+          closePremiumBox: this.closePremiumBox,
         }}
       >
         <Switch>
