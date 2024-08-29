@@ -14,7 +14,7 @@
 
 @media screen and (min-width: 768px) {
   .premium-box-bg {
-    width: calc(100vw - 50%);
+    width: 100%;
   }
   .p-b-container {
     width: 40%;
