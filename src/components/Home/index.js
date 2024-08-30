@@ -8,6 +8,7 @@ import SideNavigator from '../SideNavigator'
 import PremiumBox from '../PremiumBox'
 import LoaderView from '../LoaderView'
 import FailureView from '../FailureView'
+import HomeVideoItem from '../HomeVideoItem'
 import NoSearchResultView from '../NoSearchResultView'
 
 import {
@@ -17,6 +18,7 @@ import {
   SearchInputContainer,
   SearchInput,
   SearchButton,
+  UnHomeVideosList,
 } from './styledComponent'
 import './index.css'
 
@@ -31,22 +33,72 @@ class Home extends Component {
   state = {
     apiStatus: apiStatusConstants.initial,
     searchText: '',
+    responseVideos: [],
   }
 
   componentDidMount() {
     this.getSearchItems()
   }
 
+  getFormattedData = data => ({
+    id: data.id,
+    title: data.title,
+    thumbnailUrl: data.thumbnail_url,
+    channel: {
+      name: data.channel.name,
+      profileImageUrl: data.channel.profile_image_url,
+    },
+    viewCount: data.view_count,
+    publishedAt: data.published_at,
+  })
+
   getSearchItems = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const {searchText} = this.state
     const jwtToken = Cookies.get('jwt_token')
     const url = `https://apis.ccbp.in/videos/all?search=${searchText}`
+    const options = {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      method: 'GET',
+    }
+    const response = await fetch(url, options)
+    if (response.ok) {
+      const data = await response.json()
+      const updatedData = data.videos.map(each => this.getFormattedData(each))
+      console.log(updatedData)
+      this.setState({
+        responseVideos: updatedData,
+        apiStatus: apiStatusConstants.success,
+      })
+    } else {
+      this.setState({apiStatus: apiStatusConstants.failure})
+    }
   }
 
-  renderSuccessView = () => <h1>success</h1>
+  renderSuccessView = isDark => {
+    const {responseVideos} = this.state
+
+    return (
+      <>
+        {responseVideos.length === 0 ? (
+          <NoSearchResultView retry={this.retry} />
+        ) : (
+          <UnHomeVideosList isDark={isDark}>
+            {responseVideos.map(each => (
+              <HomeVideoItem key={each.id} videoDetails={each} />
+            ))}
+          </UnHomeVideosList>
+        )}
+      </>
+    )
+  }
 
   onChangeSearchInput = event => {
+    if (event.keyDown === 'enter') {
+      this.getSearchItems()
+    }
     this.setState({searchText: event.target.value})
   }
 
@@ -65,7 +117,7 @@ class Home extends Component {
         <SearchButton
           isDark={isDark}
           type="button"
-          onClick={this.getSearchResult}
+          onClick={this.getSearchItems}
         >
           <MdSearch />{' '}
         </SearchButton>
@@ -77,14 +129,14 @@ class Home extends Component {
     this.getSearchItems()
   }
 
-  renderAllOutputView = () => {
+  renderAllOutputView = isDark => {
     const {apiStatus} = this.state
 
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
         return <LoaderView retry={this.retry} />
       case apiStatusConstants.success:
-        return this.renderSuccessView()
+        return this.renderSuccessView(isDark)
       case apiStatusConstants.failure:
         return <FailureView retry={this.retry} />
       default:
@@ -107,7 +159,7 @@ class Home extends Component {
                   <PremiumBox />
                   <HomeBg isDark={isDark}>
                     {this.renderSearchInput(isDark)}
-                    {this.renderAllOutputView()}
+                    {this.renderAllOutputView(isDark)}
                   </HomeBg>
                 </ContentBg>
               </Body>

@@ -30,6 +30,9 @@ export const SearchInput = styled.input`
   color: ${props => (props.isDark ? '#ffffff' : '#000000')};
   width: calc(100% - 4rem);
   background-color: transparent;
+  :focus {
+    outline: none;
+  }
 `
 export const SearchButton = styled.button`
   height: 2rem;
@@ -42,4 +45,14 @@ export const SearchButton = styled.button`
 `
 export const HomeBg = styled.div`
   width: 100%;
+`
+export const UnHomeVideosList = styled.ul`
+  list-style-type: none;
+  padding: 0px;
+  width: 100%;
+  @media screen and (min-width: 576px) {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+  }
 `
