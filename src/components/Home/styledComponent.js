@@ -9,6 +9,7 @@ export const ContentBg = styled.div`
   align-self: flex-start;
   height: calc(100vh - 4.4rem);
   overflow-y: scroll;
+  width: 100%;
   @media screen and (min-width: 768px) {
     width: 80%;
     height: calc(100vh - 6rem);

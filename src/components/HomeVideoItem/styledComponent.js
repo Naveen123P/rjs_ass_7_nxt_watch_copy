@@ -15,7 +15,7 @@ export const VideoItem = styled.li`
 export const Title = styled.p`
   color: ${props => (props.isDark ? '#f4f4f4' : '#383838')};
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   align-self: flex-start;
   margin: 0px;
   padding: 0px;
