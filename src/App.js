@@ -16,6 +16,8 @@ class App extends Component {
     isDark: true,
     displayPremiumBox: true,
     savedVideos: [],
+    likedVideos: [],
+    dislikedVideos: [],
   }
 
   changeThem = () => {
@@ -26,19 +28,92 @@ class App extends Component {
     this.setState({displayPremiumBox: false})
   }
 
-  //   saveOrDeleteVideo = (newVideo) => {
+  saveOrDeleteVideo = newVideo => {
+    const {savedVideos} = this.state
+    let isPresent
+    if (savedVideos.length === 0) {
+      isPresent = false
+    } else {
+      isPresent = savedVideos.some(object => object.id === newVideo.id)
+    }
+    if (isPresent) {
+      const filteredSavedVideos = savedVideos.filter(
+        each => each.id !== newVideo.id,
+      )
+      this.setState({savedVideos: filteredSavedVideos})
+    } else {
+      this.setState(prevState => ({
+        savedVideos: [newVideo, ...prevState.savedVideos],
+      }))
+    }
+  }
 
-  //       this.setState({prevState => ({savedVideos: [...prevState.savedVideos, newVideo]})})
-  //   }
+  changeLike = videoId => {
+    const {likedVideos, dislikedVideos} = this.state
+
+    const isExist = likedVideos.some(each => each.id === videoId.id)
+
+    if (isExist) {
+      const filteredLikedVideos = likedVideos.filter(
+        each => each.id !== videoId.id,
+      )
+      this.setState({
+        likedVideos: filteredLikedVideos,
+        dislikedVideos: [videoId, ...dislikedVideos],
+      })
+    } else {
+      const filteredDisLikedVideos = dislikedVideos.filter(
+        each => each.id !== videoId.id,
+      )
+      this.setState({
+        likedVideos: [videoId, ...likedVideos],
+        dislikedVideos: filteredDisLikedVideos,
+      })
+    }
+  }
+
+  changeDislike = videoId => {
+    const {likedVideos, dislikedVideos} = this.state
+
+    const isExist = dislikedVideos.some(each => each.id === videoId.id)
+
+    if (isExist) {
+      const filteredDisLikedVideos = dislikedVideos.filter(
+        each => each.id !== videoId.id,
+      )
+      this.setState({
+        dislikedVideos: filteredDisLikedVideos,
+        likedVideos: [videoId, ...dislikedVideos],
+      })
+    } else {
+      const filteredLikedVideos = likedVideos.filter(
+        each => each.id !== videoId.id,
+      )
+      this.setState({
+        dislikedVideos: [videoId, ...dislikedVideos],
+        likedVideos: filteredLikedVideos,
+      })
+    }
+  }
 
   render() {
-    const {isDark, displayPremiumBox, savedVideos} = this.state
+    const {
+      isDark,
+      displayPremiumBox,
+      savedVideos,
+      likedVideos,
+      dislikedVideos,
+    } = this.state
     return (
       <ThemContext.Provider
         value={{
           isDark,
           displayPremiumBox,
           savedVideos,
+          likedVideos,
+          dislikedVideos,
+          changeLike: this.changeLike,
+          changeDislike: this.changeDislike,
           saveOrDeleteVideo: this.saveOrDeleteVideo,
           changeThem: this.changeThem,
           closePremiumBox: this.closePremiumBox,

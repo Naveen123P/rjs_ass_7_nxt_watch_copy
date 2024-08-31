@@ -18,7 +18,7 @@ import LoaderView from '../LoaderView'
 import FailureView from '../FailureView'
 import {Body, ContentBg} from '../Home/styledComponent'
 import {Title} from '../HomeVideoItem/styledComponent'
-import {LikeButton, CName} from './styledComponent'
+import {LikeButton, DislikeButton, SaveButton, CName} from './styledComponent'
 import './index.css'
 
 const apiStatusConstants = {
@@ -30,11 +30,8 @@ const apiStatusConstants = {
 
 class VideoItemDetailsRoute extends Component {
   state = {
-    isSaved: false,
-    like: false,
     apiStatus: false,
     videoDetails: {},
-    isPlaying: false,
   }
 
   componentDidMount() {
@@ -72,9 +69,7 @@ class VideoItemDetailsRoute extends Component {
     const response = await fetch(url, options)
     if (response.ok) {
       const data = await response.json()
-      console.log(response)
       const updatedData = this.getFormattedData(data.video_details)
-      console.log(updatedData)
       this.setState({
         videoDetails: updatedData,
         apiStatus: apiStatusConstants.success,
@@ -84,76 +79,133 @@ class VideoItemDetailsRoute extends Component {
     }
   }
 
-  renderSuccessView = isDark => {
+  onSaveOrDeleteVideo = () => {}
+
+  renderSuccessView = () => {
     const {videoDetails, isPlaying, like} = this.state
     const {
+      id,
       title,
       videoUrl,
+      thumbnailUrl,
       channel,
       viewCount,
       publishedAt,
       description,
     } = videoDetails
+    const {name, profileImageUrl, subscriberCount} = channel
 
     return (
-      <>
-        <div className="react-player-bg">
-          <ReactPlayer
-            url={videoUrl}
-            controls
-            width="100%"
-            height="100%"
-            className="react-player"
-          />
-        </div>
-        <div className="video-content">
-          <Title isDark={isDark}>{title}</Title>
-          <div className="views-likes-bg">
-            <div className="flex-row views-bg">
-              <p className="para">{viewCount}</p>
-              <BsDot className="para size-large" />
-              <p className="para">
-                {formatDistanceToNow(new Date(publishedAt))} ago
-              </p>
-            </div>
-            <div className="likes-bg">
-              <LikeButton like type="button">
-                Like{/* <GrLike /> Like */}
-              </LikeButton>
-              <LikeButton like type="button">
-                Dislike{/* <SlDislike /> Dislike */}
-              </LikeButton>
-              <LikeButton like type="button">
-                <BiListPlus /> Save
-              </LikeButton>
-            </div>
-          </div>
-          <hr />
-          <div className="profile-bg">
-            <img
-              src={channel.profileImageUrl}
-              alt="profile"
-              className="profile"
-            />
-            <div className="channel-bg">
-              <CName isDark={isDark}>{channel.name}</CName>
-              <p className="para">{channel.subscriberCount} subscribers</p>
-            </div>
-          </div>
-          <CName isDark={isDark}>{description}</CName>
-        </div>
-      </>
+      <ThemContext.Consumer>
+        {value => {
+          const {
+            isDark,
+            savedVideos,
+            saveOrDeleteVideo,
+            likedVideos,
+            dislikedVideos,
+            changeLike,
+            changeDislike,
+          } = value
+          console.log(savedVideos)
+
+          const isPresent = savedVideos.some(object => object.id === id)
+          const isLiked = likedVideos.some(object => object.id === id)
+          const isDisliked = dislikedVideos.some(object => object.id === id)
+          const onSaveOrDeleteVideo = () => {
+            saveOrDeleteVideo({
+              id,
+              title,
+              thumbnailUrl,
+              name,
+              viewCount,
+              publishedAt,
+            })
+          }
+          const onClickLike = () => {
+            changeLike({id})
+          }
+          const onClickDislike = () => {
+            changeDislike({id})
+          }
+
+          return (
+            <>
+              <div className="react-player-bg">
+                <ReactPlayer
+                  url={videoUrl}
+                  controls
+                  width="100%"
+                  height="100%"
+                  className="react-player"
+                />
+              </div>
+              <div className="video-content">
+                <Title isDark={isDark}>{title}</Title>
+                <div className="views-likes-bg">
+                  <div className="flex-row views-bg">
+                    <p className="para">{viewCount}</p>
+                    <BsDot className="para size-large" />
+                    <p className="para">
+                      {formatDistanceToNow(new Date(publishedAt))} ago
+                    </p>
+                  </div>
+                  <div className="likes-bg">
+                    <LikeButton
+                      isLiked={isLiked}
+                      like
+                      type="button"
+                      onClick={onClickLike}
+                    >
+                      Like{/* <GrLike /> Like */}
+                    </LikeButton>
+                    <DislikeButton
+                      isDisliked={isDisliked}
+                      like
+                      type="button"
+                      onClick={onClickDislike}
+                    >
+                      Dislike{/* <SlDislike /> Dislike */}
+                    </DislikeButton>
+                    <SaveButton
+                      like
+                      isPresent={isPresent}
+                      type="button"
+                      onClick={onSaveOrDeleteVideo}
+                    >
+                      <BiListPlus /> Save
+                    </SaveButton>
+                  </div>
+                </div>
+                <hr />
+                <div className="profile-bg">
+                  <img
+                    src={profileImageUrl}
+                    alt="profile"
+                    className="profile"
+                  />
+                  <div className="channel-bg">
+                    <CName isDark={isDark}>{name}</CName>
+                    <p className="para">{subscriberCount} subscribers</p>
+                  </div>
+                </div>
+                <CName isDark={isDark}>{description}</CName>
+              </div>
+            </>
+          )
+        }}
+      </ThemContext.Consumer>
     )
   }
 
-  renderAllOutputView = isDark => {
+  renderAllOutputView = () => {
     const {apiStatus} = this.state
 
     switch (apiStatus) {
       case apiStatusConstants.inProgress:
         return <LoaderView retry={this.retry} />
       case apiStatusConstants.success:
-        return this.renderSuccessView(isDark)
+        return this.renderSuccessView()
       case apiStatusConstants.failure:
         return <FailureView retry={this.retry} />
       default:
@@ -172,7 +224,7 @@ class VideoItemDetailsRoute extends Component {
               <Header />
               <Body isDark={isDark} className="flex-row">
                 <SideNavigator />
-                <ContentBg>{this.renderAllOutputView(isDark)}</ContentBg>
+                <ContentBg>{this.renderAllOutputView()}</ContentBg>
               </Body>
             </>
           )

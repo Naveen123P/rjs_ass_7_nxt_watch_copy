@@ -67,7 +67,6 @@ class Home extends Component {
     if (response.ok) {
       const data = await response.json()
       const updatedData = data.videos.map(each => this.getFormattedData(each))
-      console.log(updatedData)
       this.setState({
         responseVideos: updatedData,
         apiStatus: apiStatusConstants.success,

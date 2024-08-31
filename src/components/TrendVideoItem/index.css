@@ -1,0 +1,9 @@
+@media screen and (min-width: 576px) {
+  .trend-div {
+    display: flex;
+  }
+  .trend-thumbnail {
+    width: 50%;
+    margin-right: 1rem;
+  }
+}

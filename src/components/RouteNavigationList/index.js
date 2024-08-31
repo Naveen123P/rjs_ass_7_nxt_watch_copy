@@ -34,8 +34,6 @@ class RouteNavigationList extends Component {
 
   renderActiveRoute = () => {
     const {params} = this.props
-    console.log(this.props)
-    console.log(params)
   }
 
   changeActiveRoute = id => {
@@ -58,8 +56,7 @@ class RouteNavigationList extends Component {
   )
 
   render() {
-    const {activeRoute, properties} = this.state
-    console.log(properties)
+    const {activeRoute} = this.state
     this.renderActiveRoute()
     return (
       <ThemContext.Consumer>

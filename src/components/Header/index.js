@@ -119,8 +119,6 @@ class Header extends Component {
   }
 
   render() {
-    const {activeRoute} = this.state
-    console.log(activeRoute)
     return (
       <ThemContext.Consumer>
         {value => {

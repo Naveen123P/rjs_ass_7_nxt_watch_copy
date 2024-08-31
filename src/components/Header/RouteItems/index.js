@@ -35,7 +35,6 @@ const RouteItems = props => {
   }
 
   const onChangeActiveRoute = () => {
-    console.log(routeId)
     changeActiveRoute(routeId)
   }
 

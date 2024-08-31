@@ -1,8 +1,10 @@
 import {Component} from 'react'
+import ThemContext from '../../context/ThemContext'
 
 import Header from '../Header'
 import SideNavigator from '../SideNavigator'
 import PremiumBox from '../PremiumBox'
+import {Body, ContentBg, HomeBg} from '../Home/styledComponent'
 
 import {} from './styledComponent'
 import './index.css'
@@ -10,16 +12,26 @@ import './index.css'
 class SavedVideosRoute extends Component {
   render() {
     return (
-      <>
-        <Header />
-        <div className="flex-row">
-          <SideNavigator />
-          <div className="flex-start">
-            <PremiumBox />
-            <h1>Saved Videos Route</h1>
-          </div>
-        </div>
-      </>
+      <ThemContext.Consumer>
+        {value => {
+          const {isDark} = value
+
+          return (
+            <>
+              <Header />
+              <Body isDark={isDark} className="flex-row">
+                <SideNavigator />
+                <ContentBg>
+                  <PremiumBox />
+                  <HomeBg isDark={isDark}>
+                    <h1>saved videos</h1>
+                  </HomeBg>
+                </ContentBg>
+              </Body>
+            </>
+          )
+        }}
+      </ThemContext.Consumer>
     )
   }
 }
