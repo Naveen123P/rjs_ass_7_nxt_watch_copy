@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
 export const ListItem = styled.li`
-  background-color: transparent
+  background-color: transparent;
+  background-color: ${props => props.isActive && '#606060'};
   background-color: ${props =>
     props.isActive && props.isDark ? '#606060' : 'transparent'};
-  background: ${props => (props.isActive && !props.isDark ? '#cbd5e1' : '')};
-  background-color: ${props => props.isDark}
+  background: ${props => props.isActive && !props.isDark && '#cbd5e1'};
   width: 100%;
   padding-left: 1.5rem;
   padding-right: 1rem;
   @media screen and (min-width: 768px) {
-      padding: 0px;
+    padding: 0px;
   }
 `
 

@@ -24,18 +24,18 @@ const routesList = [
 ]
 
 class RouteNavigationList extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      activeRoute: routesList[0].routeId,
-    }
-  }
+  //   constructor(props) {
+  //     super(props)
+  //     this.state = {
+  //       activeRoute: routesList[0].routeId,
+  //     }
+  //   }
 
-  changeActiveRoute = id => {
-    this.setState({activeRoute: id})
-  }
+  //   changeActiveRoute = id => {
+  //     this.setState({activeRoute: id})
+  //   }
 
-  renderRouteItemsList = (isDark, activeRoute) => (
+  renderRouteItemsList = (isDark, activeRoute, changeActiveRoute) => (
     <UnList isDark={isDark}>
       {routesList.map(each => (
         <RouteItems
@@ -43,22 +43,25 @@ class RouteNavigationList extends Component {
           routeDetails={each}
           isDark={isDark}
           isActive={activeRoute === each.routeId}
-          changeActiveRoute={this.changeActiveRoute}
+          changeActiveRoute={changeActiveRoute}
         />
       ))}
     </UnList>
   )
 
   render() {
-    const {activeRoute} = this.state
     return (
       <ThemContext.Consumer>
         {value => {
-          const {isDark} = value
+          const {isDark, activeRoute, changeActiveRoute} = value
 
           return (
             <NavModelBg isDark={isDark}>
-              {this.renderRouteItemsList(isDark, activeRoute)}
+              {this.renderRouteItemsList(
+                isDark,
+                activeRoute,
+                changeActiveRoute,
+              )}
             </NavModelBg>
           )
         }}

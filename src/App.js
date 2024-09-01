@@ -11,6 +11,25 @@ import LoginForm from './components/LoginForm'
 import NotFound from './components/NotFound'
 import './App.css'
 
+const routesList = [
+  {
+    routeId: 'home',
+    displayText: 'Home',
+  },
+  {
+    routeId: 'trending',
+    displayText: 'Trending',
+  },
+  {
+    routeId: 'gaming',
+    displayText: 'Gaming',
+  },
+  {
+    routeId: 'saved-videos',
+    displayText: 'Saved videos',
+  },
+]
+
 class App extends Component {
   state = {
     isDark: true,
@@ -18,6 +37,7 @@ class App extends Component {
     savedVideos: [],
     likedVideos: [],
     dislikedVideos: [],
+    activeRoute: routesList[0].routeId,
   }
 
   changeThem = () => {
@@ -96,6 +116,10 @@ class App extends Component {
     }
   }
 
+  changeActiveRoute = id => {
+    this.setState({activeRoute: id})
+  }
+
   render() {
     const {
       isDark,
@@ -103,6 +127,7 @@ class App extends Component {
       savedVideos,
       likedVideos,
       dislikedVideos,
+      activeRoute,
     } = this.state
     return (
       <ThemContext.Provider
@@ -112,6 +137,8 @@ class App extends Component {
           savedVideos,
           likedVideos,
           dislikedVideos,
+          activeRoute,
+          changeActiveRoute: this.changeActiveRoute,
           changeLike: this.changeLike,
           changeDislike: this.changeDislike,
           saveOrDeleteVideo: this.saveOrDeleteVideo,

@@ -11,6 +11,8 @@ const ThemContext = React.createContext({
   saveOrDeleteVideo: () => {},
   closePremiumBox: () => {},
   changeThem: () => {},
+  activeRoute: '',
+  changeActiveRoute: () => {},
 })
 
 export default ThemContext
