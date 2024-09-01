@@ -1,4 +1,4 @@
-import {Route, Switch} from 'react-router-dom'
+import {Route, Switch, Redirect} from 'react-router-dom'
 import {Component} from 'react'
 import ThemContext from './context/ThemContext'
 import Home from './components/Home'
@@ -8,7 +8,7 @@ import GamingRoute from './components/GamingRoute'
 import SavedVideosRoute from './components/SavedVideosRoute'
 import ProtectedRoute from './components/ProtectedRoute'
 import LoginForm from './components/LoginForm'
-
+import NotFound from './components/NotFound'
 import './App.css'
 
 class App extends Component {
@@ -134,6 +134,8 @@ class App extends Component {
             path="/videos/:id"
             component={VideoItemDetailsRoute}
           />
+          <Route path="/not-found" component={NotFound} />
+          <Redirect to="not-found" />
         </Switch>
       </ThemContext.Provider>
     )

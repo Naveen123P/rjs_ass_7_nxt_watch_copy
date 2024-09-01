@@ -1,10 +1,11 @@
 import {Link} from 'react-router-dom'
 
 import ThemContext from '../../context/ThemContext'
-// import {VideoItem, Title} from './styledComponent'
+import {ListItem} from './styledComponent'
 
-import {ListItem} from '../Header/RouteItems/styledComponent'
+// import {ListItem} from '../Header/RouteItems/styledComponent'
 import {Title} from '../HomeVideoItem/styledComponent'
+import './index.css'
 
 const GamingVideoItem = props => {
   const {videoDetails} = props
@@ -16,13 +17,13 @@ const GamingVideoItem = props => {
         return (
           <ListItem isDark={isDark}>
             <Link to={`/videos/${id}`} className="link">
-              <div className="trend-div">
+              <div className="game-div">
                 <img
                   src={thumbnailUrl}
                   alt="thumbnail"
-                  className="thumbnail trend-thumbnail"
+                  className=" gaming-thumbnail"
                 />
-                <div className="profile-title-bg">
+                <div className="profile-title-bg gaming-profile-title-bg">
                   <div className="title-container">
                     <Title isDark={isDark}>{title}</Title>
                     <div className="channel-views-pub-bg flex-row sm-flex-wrap">

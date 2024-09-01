@@ -23,10 +23,6 @@ import {
 import './index.css'
 
 class Header extends Component {
-  state = {
-    activeRoute: 'home',
-  }
-
   onClickLogout = () => {
     const {history} = this.props
     Cookies.remove('jwt_token')

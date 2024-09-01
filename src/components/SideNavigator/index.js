@@ -1,7 +1,7 @@
 import RouteNavigationList from '../RouteNavigationList'
 import ThemContext from '../../context/ThemContext'
 import ContactUs from '../ContactUs'
-import {SideContainer, Dummy} from './styledComponent'
+import {SideContainer} from './styledComponent'
 import './index.css'
 
 const SideNavigator = () => (

@@ -10,18 +10,13 @@ import LoaderView from '../LoaderView'
 import FailureView from '../FailureView'
 import GamingVideoItem from '../GamingVideoItem'
 import NoSearchResultView from '../NoSearchResultView'
-import {
-  Body,
-  ContentBg,
-  HomeBg,
-  UnHomeVideosList,
-} from '../Home/styledComponent'
+import {Body, ContentBg, HomeBg} from '../Home/styledComponent'
 import {
   TrendHeadBg,
   TrendIconBg,
   TrendHeading,
 } from '../TrendingRoute/styledComponent'
-import {} from './styledComponent'
+import {UnGameVideosList} from './styledComponent'
 import './index.css'
 
 const apiStatusConstants = {
@@ -79,11 +74,11 @@ class GamingRoute extends Component {
         {responseVideos.length === 0 ? (
           <NoSearchResultView retry={this.retry} />
         ) : (
-          <UnHomeVideosList isDark={isDark}>
+          <UnGameVideosList isDark={isDark}>
             {responseVideos.map(each => (
               <GamingVideoItem key={each.id} videoDetails={each} />
             ))}
-          </UnHomeVideosList>
+          </UnGameVideosList>
         )}
       </>
     )

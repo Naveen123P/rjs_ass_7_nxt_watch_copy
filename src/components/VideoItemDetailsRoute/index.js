@@ -82,7 +82,7 @@ class VideoItemDetailsRoute extends Component {
   onSaveOrDeleteVideo = () => {}
 
   renderSuccessView = () => {
-    const {videoDetails, isPlaying, like} = this.state
+    const {videoDetails} = this.state
     const {
       id,
       title,
@@ -94,7 +94,7 @@ class VideoItemDetailsRoute extends Component {
       description,
     } = videoDetails
     const {name, profileImageUrl, subscriberCount} = channel
-
+    console.log(videoDetails)
     return (
       <ThemContext.Consumer>
         {value => {
@@ -117,7 +117,7 @@ class VideoItemDetailsRoute extends Component {
               id,
               title,
               thumbnailUrl,
-              name,
+              channel,
               viewCount,
               publishedAt,
             })

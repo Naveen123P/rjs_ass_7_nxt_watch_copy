@@ -10,6 +10,9 @@ export const ContentBg = styled.div`
   height: calc(100vh - 4.4rem);
   overflow-y: scroll;
   width: 100%;
+  ::-webkit-scrollbar {
+    width: 0;
+  }
   @media screen and (min-width: 768px) {
     width: 80%;
     height: calc(100vh - 6rem);

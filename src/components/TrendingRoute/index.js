@@ -111,7 +111,6 @@ class TrendingRoute extends Component {
   }
 
   render() {
-    const {responseVideos} = this.state
     return (
       <ThemContext.Consumer>
         {value => {
